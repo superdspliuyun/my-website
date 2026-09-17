@@ -1,0 +1,7 @@
+PASS | 首次访问 / 系统 light | expected=light got=light
+PASS | 首次访问 / 系统 dark | expected=dark got=dark
+PASS | 用户偏好 dark / 系统 light | expected=dark got=dark
+PASS | 用户偏好 light / 系统 dark | expected=light got=light
+PASS | 非法值 / 回退系统 | expected=light got=light
+
+Summary: 5 passed, 0 failed

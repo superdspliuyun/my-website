@@ -1,0 +1,14 @@
+Preview 服务器校验（Phase 7 tasks 7.6 机器侧证据；add-navigation 变更）
+
+preview 根（http://localhost:4174/my-website/）：HTTP 200
+JS 产物（index-DTSm7ls4.js）：HTTP 200
+CSS 产物（index-QPWaSCTu.css）：HTTP 200
+
+HTML 头：
+- <html lang="zh-CN">
+- <meta name="viewport" ...>
+- <title>[Your Name] — [Your Role]</title>（占位文案）
+
+控制台：build 日志 0 错误 0 警告（26 modules transformed、built in 179ms、产物 229.72 kB JS + 22.83 kB CSS）；用户目视 Console 面板由维护者在浏览器中补充（截屏 evidence/preview-02-console-clean.png）。
+
+Phase 7 浏览器目视验证（7.1–7.5）由维护者手动采集，证据文件名按下方清单。

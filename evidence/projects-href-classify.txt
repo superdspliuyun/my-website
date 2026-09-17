@@ -1,0 +1,6 @@
+PASS | 项目 1（占位） | expected=external-a got=external-a
+PASS | 项目 2（占位） | expected=external-a got=external-a
+PASS | 项目 3（占位） | expected=external-a got=external-a
+PASS | 项目 4（空 href，降级） | expected=div got=div
+
+Summary: 4 passed, 0 failed

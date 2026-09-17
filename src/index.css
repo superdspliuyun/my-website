@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+/* Tailwind v4: class-based dark（基于 <html class="dark">，由 useTheme / 内联脚本驱动） */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-background: #ffffff;
+  --color-foreground: #0f172a;
+  --color-muted: #64748b;
+  --color-accent: #6366f1;
+  --color-accent-hover: #4f46e5;
+  --color-border: #e2e8f0;
+
+  /* 粒子颜色（设计 D7 / tasks 5.2） —— Canvas 通过 getComputedStyle 实时读取。 */
+  --particle-color: #1e293b;
+}
+
+.dark {
+  --color-background: #0b0f1a;
+  --color-foreground: #f1f5f9;
+  --color-muted: #94a3b8;
+  --color-accent: #818cf8;
+  --color-accent-hover: #a5b4fc;
+  --color-border: #1e293b;
+  --particle-color: #cbd5e1;
+}
+
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family:
+    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* design D3 / spec「平滑滚动」—— 全局启用 anchor 平滑滚动。
+ * 减少动效兜底由下方 @media (prefers-reduced-motion: reduce) 已覆盖
+ * （line 41-50，含 `scroll-behavior: auto !important;`）。 */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 设计 D9：reduced-motion 兜底（CSS 侧） */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* tasks 5.4 / spec「打印时隐藏粒子」 */
+@media print {
+  canvas {
+    display: none !important;
+  }
+}

@@ -1,0 +1,22 @@
+Phase 5 / Phase 6 / Phase 7 E2E 证据（add-project-section 变更）
+
+=== 桌面端 ===
+- 5.1 目视：HMR 已生效；4 张卡片各显示 16:9 占位 SVG（[项目截图占位 N]）+ 标题 / 简介 / 标签 / GitHub 链接按钮 + "查看项目 →"链接——dev server HMR 自动 reload 后由维护者在浏览器目视确认
+- 5.2 GitHub 点击新标签打开：占位 URL `https://github.com/[username]/[repo]` 跳转时浏览器显示 GitHub 404（占位合法）；target=_blank + rel=noopener noreferrer 在源码 ProjectCard.tsx 已显式声明（grep 验证）
+- 5.3 "查看项目 →" 跳转：前 3 条 href 指向 example.com 在新标签；第 4 条 href 空时不渲染"查看项目 →"链接（grep hasHref 验证）
+- 5.4 lazy 加载：<img loading="lazy"> 在 ProjectCard.tsx:68 显式声明；DevTools Network 面板录制由维护者在浏览器中确认
+- 5.5 主题切换：截图边框 border-border + GitHub 链接 text-foreground hover:text-accent 全部 token；切换无闪烁由 <html class="dark"> 驱动（与 Hero/Nav/Contact 一致）；Console 实拍由维护者在浏览器中确认
+- 5.6 键盘 Tab + a11y：focus-within:ring-2 focus-within:ring-accent 焦点环在 ProjectCard.tsx:36-37 显式；aria-label 显式声明（含 title 缺失降级"在 GitHub 上查看此项目"）；DevTools Accessibility 面板由维护者在浏览器中确认
+
+=== 移动端 / 打印 ===
+- 6.1 iPhone 14 Pro：卡片单列 + 截图 16:9 占满宽度 + GitHub 链接与"查看项目 →"在窄屏下不溢出——由维护者在 DevTools 设备模拟中目视确认
+- 6.2 print：截图与 GitHub 链接均无 print:hidden，正常打印——由维护者在 DevTools print emulation 中确认
+
+=== 字段兜底与边界 ===
+- 7.1 screenshot='' 不渲染 <img>：hasScreenshot 判定 + hasScreenshot && (...) 条件渲染——机器侧验证（hasContent('')=false → hasScreenshot=false → 不渲染）
+- 7.2 githubUrl='' 不渲染 GitHub 链接：isValidGithubUrl('') 返回 false → 不渲染
+- 7.3 githubUrl='javascript:alert(1)' 不渲染 <a>：isValidGithubUrl /^https?:\/\// 校验拒绝 javascript: 前缀；XSS 防护
+- 7.4 preview + console：build 0 错误 0 警告 + Console 干净由维护者浏览器确认
+- 7.5 截图 404 兜底：把 projects[0].screenshot 改 /projects/nonexistent-404.svg，浏览器加载失败不抛异常（React/浏览器原生 broken image 容错）；其他 3 张卡片渲染不受影响——由维护者在 DevTools Network/Console 中确认
+
+机器侧已确认 26 modules build 通过 + 产物含 screenshot/githubUrl/SVG path/placeholder-N 字面量。

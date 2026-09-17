@@ -1,0 +1,38 @@
+schema: spec-driven
+
+# 项目上下文（可选）
+# 在 AI 生成 artifacts 时会展示这里的内容。
+# 添加技术栈、规范、风格指南、领域知识等。
+context: |
+  项目：个人品牌站（Personal Website）
+  技术栈：React 19 + Vite 7 + TypeScript + Tailwind CSS v4
+  部署：GitHub Pages，base path 为 /my-website/
+  设计风格：科技感，动态粒子风，支持亮/暗切换
+  性能：首屏加载 < 2 秒，所有图片使用 lazy loading
+
+# 各 artifact 的自定义规则（可选）
+rules:
+  proposal:
+    - 必须明确写出 out-of-scope（不做什么）
+    - 必须评估对现有功能的影响
+  specs:
+    - 使用 Given/When/Then 格式描述交互行为
+    - 每个 spec 必须包含至少一个边界/异常场景
+  tasks:
+    - 每个任务粒度不超过 30 分钟
+    - 按 Phase 分组，每个 Phase 结束后等待我确认
+
+# 各操作的指导说明（可选）
+# 与上面的 artifact 规则分开，这里管 apply/archive 流程本身。
+operations:
+  apply:
+    guidance:
+      - 简洁地总结测试结果
+  archive:
+    guidance:
+      - 归档完成后先总结归档结果再结束
+
+# 语言偏好（可选）
+Languages: |
+  Generate all artifacts in Simplified Chinese.
+  Use English for code-related terms.
