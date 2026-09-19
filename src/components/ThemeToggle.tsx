@@ -1,60 +1,59 @@
-import { useTheme } from '../hooks/useTheme';
+import { useEffect, useState } from 'react'
 
-/**
- * 明亮 / 暗黑模式切换按钮。
- * - aria-label 反映"点击后会执行的操作"，明亮下提示"切换到暗黑"，
- *   暗黑下提示"切换到明亮"（spec「切换按钮可访问」）。
- * - aria-pressed 反映当前主题状态：暗黑 = true，明亮 = false。
- * - focus-visible 焦点环通过 Tailwind 工具类实现，键盘 Tab 可见。
- * - 不引入图标库：sun / moon 为内联 SVG（design Non-Goals）。
- */
+const THEME_STORAGE_KEY = 'my-website-theme'
+
+function getInitialTheme(): boolean {
+  if (typeof window === 'undefined') {
+    return false
+  }
+
+  try {
+    const savedTheme = window.localStorage.getItem(THEME_STORAGE_KEY)
+
+    if (savedTheme === 'dark') {
+      return true
+    }
+
+    if (savedTheme === 'light') {
+      return false
+    }
+  } catch {
+    // Fall back to the system preference when browser storage is unavailable.
+  }
+
+  return window.matchMedia('(prefers-color-scheme: dark)').matches
+}
+
 function ThemeToggle() {
-  const { theme, toggle } = useTheme();
-  const isDark = theme === 'dark';
-  const label = isDark ? '切换到明亮模式' : '切换到暗黑模式';
+  const [isDark, setIsDark] = useState(getInitialTheme)
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', isDark)
+  }, [isDark])
+
+  function toggleTheme() {
+    const nextTheme = !isDark
+
+    setIsDark(nextTheme)
+
+    try {
+      window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme ? 'dark' : 'light')
+    } catch {
+      // The selected theme still applies for this session if storage is unavailable.
+    }
+  }
 
   return (
     <button
       type="button"
-      onClick={toggle}
-      aria-label={label}
+      onClick={toggleTheme}
+      className="rounded-full border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-800 shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+      aria-label={isDark ? '切换为亮色模式' : '切换为暗色模式'}
       aria-pressed={isDark}
-      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background/60 text-foreground backdrop-blur transition-colors hover:bg-background/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background print:hidden"
     >
-      {isDark ? (
-        // 月亮图标 —— 暗黑模式下显示，提示点击会切到明亮
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-5 w-5"
-          aria-hidden="true"
-        >
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-        </svg>
-      ) : (
-        // 太阳图标 —— 明亮模式下显示，提示点击会切到暗黑
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-5 w-5"
-          aria-hidden="true"
-        >
-          <circle cx="12" cy="12" r="4" />
-          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-        </svg>
-      )}
+      {isDark ? '亮色模式' : '暗色模式'}
     </button>
-  );
+  )
 }
 
-export default ThemeToggle;
+export default ThemeToggle

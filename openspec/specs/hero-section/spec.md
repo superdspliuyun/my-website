@@ -1,142 +1,82 @@
 # hero-section Specification
 
 ## Purpose
-
-为个人品牌站首页提供首屏 Hero 区块，向访客传达身份与价值主张，并提供"明亮/暗黑模式切换"作为全站主题基线。
+为个人品牌站提供首屏身份展示、项目入口和可访问的主题切换体验，同时以低干扰的科技感视觉建立站点的第一印象。
 
 ## Requirements
 
-### Requirement: Hero 内容展示
+### Requirement: Hero identity content
 
-系统 MUST 在首页首屏以全屏高度（不小于视口可用高度）展示一个居中的 Hero 区块，包含且仅包含以下三类内容，按从上到下顺序排列：姓名（最高层级标题）、职业（一行文字）、一句话自我介绍（一段说明）。
+系统 SHALL 在首屏提供一个占满可视区域高度且内容居中的 Hero Section，展示姓名“小飞侠”、职业“天马行空”及介绍文案“喜欢漫无边际去追逐梦的背影”。
 
-#### Scenario: 首屏完整呈现
-- **WHEN** 访客打开网站首页
-- **THEN** 视口可见区域被 Hero 区块占满
-- **AND** 姓名、职业、自我介绍均居中可见
+#### Scenario: Hero content is visible on page load
 
-#### Scenario: 文案来源单一
-- **WHEN** 维护者修改姓名 / 职业 / 自我介绍 / CTA 文案
-- **THEN** 仅需修改一处配置即可在 Hero 中生效，无需改动组件代码
+- **GIVEN** 用户首次打开站点首页
+- **WHEN** 页面完成初始渲染
+- **THEN** 用户可以在首屏看到姓名、职业和完整介绍文案
 
-#### Scenario: 文案缺失兜底
-- **WHEN** 任一文案字段为空或仅包含空白字符
-- **THEN** 缺失字段 MUST NOT 渲染空 DOM 占位（避免留下不可见空白行），其余字段仍正常渲染
+#### Scenario: Small viewport preserves readable Hero content
 
-### Requirement: Hero CTA 跳转项目
+- **GIVEN** 用户使用窄屏移动设备访问首页
+- **WHEN** 可视区域宽度不足以容纳桌面字号
+- **THEN** Hero 内容仍保持完整、居中且无需水平滚动
 
-Hero MUST 包含一个 CTA 按钮（文案"查看项目"），点击后 MUST 跳转至站内锚点 `#projects` 并显示 Projects 区块。
+### Requirement: Project call to action
 
-#### Scenario: 点击 CTA
-- **WHEN** 访客点击 CTA 按钮
-- **THEN** 页面跳转至 `#projects` 锚点，Projects 区块 MUST 进入视口（浏览器原生平滑滚动或跳转定位均可）
+系统 SHALL 在 Hero Section 提供一个 CTA，目标为项目展示区域的 `#projects` 锚点；项目展示区域 SHALL 位于 Hero Section 下方，包含至少 4 个项目卡片，并保持稳定可访问的 `id`。
 
-#### Scenario: 键盘激活
-- **WHEN** CTA 按钮获得焦点，访客按下 `Enter` 或 `Space`
-- **THEN** 行为等同点击（跳转至 `#projects`）
+#### Scenario: CTA targets the project anchor
 
-#### Scenario: CTA 在打印态隐藏
-- **WHEN** 用户触发打印预览（`window.matchMedia('print').matches` 为 true）
-- **THEN** CTA 按钮 MUST NOT 出现在打印输出中（节省墨水并保持版面干净）
+- **GIVEN** 用户位于 Hero Section
+- **WHEN** 用户激活 CTA
+- **THEN** 浏览器导航目标为 `#projects`，并滚动到 Hero 下方的项目展示区域
 
-### Requirement: Hero 视觉背景
+#### Scenario: CTA remains usable without pointer input
 
-Hero MUST 由"CSS 渐变色底层 + Canvas 粒子叠加层"组合而成，整体呈现科技感。
+- **GIVEN** 用户通过键盘浏览页面
+- **WHEN** 焦点移动到 CTA 并按下 Enter
+- **THEN** CTA 被激活且导航目标为 `#projects`，项目卡片区域保持可访问
 
-#### Scenario: 渐变底层始终渲染
-- **WHEN** 任意主题下、任意视口尺寸打开首页
-- **THEN** Hero 区域 MUST 展示非纯色的渐变背景
+### Requirement: Theme selection
 
-#### Scenario: 粒子层在主流环境启动
-- **WHEN** 浏览器支持 Canvas 2D 上下文且未启用"减少动效"
-- **THEN** 粒子层 MUST 启动并持续渲染动画
+系统 SHALL 提供亮色和暗色主题切换控件，并在后续访问中恢复用户最后一次选择；没有已保存偏好时 SHALL 跟随系统主题偏好。
 
-#### Scenario: 减少动效时跳过动画
-- **WHEN** 用户系统设置了 `prefers-reduced-motion: reduce`
-- **THEN** 粒子层 MUST NOT 启动 RAF 动画循环，仅保留渐变底层
+#### Scenario: User switches theme
 
-#### Scenario: 打印时隐藏粒子
-- **WHEN** 打印预览状态
-- **THEN** Canvas 粒子层 MUST NOT 被打印
+- **GIVEN** 页面已加载且主题切换控件可用
+- **WHEN** 用户切换到另一主题
+- **THEN** 页面颜色切换为所选主题且控件反映当前状态
 
-### Requirement: 明亮/暗黑模式切换
+#### Scenario: Saved preference is restored
 
-Hero MUST 在右上角提供切换按钮，允许访客在"明亮"与"暗黑"模式间切换；切换结果 MUST 持久化到 `localStorage`，并在后续访问时立即生效，不出现"先按系统默认显示再切换"的主题闪烁。
+- **GIVEN** 用户此前已选择主题
+- **WHEN** 用户再次打开站点
+- **THEN** 页面恢复该用户选择的主题
 
-#### Scenario: 默认跟随系统
-- **WHEN** 首次访问且 `localStorage` 中无主题偏好
-- **THEN** 系统 MUST 根据 `prefers-color-scheme` 选择初始主题（dark 系统 → 暗黑；light 系统 → 明亮）
+#### Scenario: No saved theme preference
 
-#### Scenario: 手动切换覆盖系统
-- **WHEN** 访客点击切换按钮
-- **THEN** 当前主题立即切换（明亮 ↔ 暗黑）
-- **AND** 切换结果写入 `localStorage`
+- **GIVEN** 浏览器中不存在已保存的主题选择
+- **WHEN** 用户首次打开站点
+- **THEN** 页面采用系统主题偏好
 
-#### Scenario: 刷新后保留偏好
-- **WHEN** 访客在切换后刷新页面或重新打开网站
-- **THEN** 系统 MUST 在 React 渲染前应用已持久化的主题偏好（MUST NOT 出现"先按系统默认显示一帧再切换"的视觉闪烁）
+### Requirement: Technology-style background
 
-#### Scenario: 用户偏好高于系统变更
-- **WHEN** `localStorage` 中已存在主题偏好
-- **THEN** 后续即使系统 `prefers-color-scheme` 改变，MUST NOT 覆盖用户偏好
+系统 SHALL 在 Hero Section 呈现适配亮色和暗色主题的渐变背景及粒子视觉层。粒子仅可缓慢动态运动，Hero 内容、CTA 与页面滚动 SHALL 不包含动画效果。
 
-#### Scenario: 切换按钮可访问
-- **WHEN** 切换按钮通过键盘 Tab 获得焦点
-- **THEN** 按钮 MUST 显示清晰的 `:focus-visible` 焦点环
-- **AND** `aria-label` 反映当前可执行的操作（明亮模式下提示"切换到暗黑"，暗黑模式下提示"切换到明亮"）
-- **AND** `aria-pressed` 反映当前主题状态（暗黑为 `true`，明亮为 `false`）
+#### Scenario: Background follows the active theme
 
-#### Scenario: 局部存储异常兜底
-- **WHEN** `localStorage` 不可用（隐私模式 / 配额耗尽 / SecurityError）
-- **THEN** 系统 MUST 仍能完成主题切换（仅不持久化），且 MUST NOT 抛出未捕获异常
+- **GIVEN** 用户正在查看 Hero Section
+- **WHEN** 用户切换主题
+- **THEN** 渐变背景和粒子视觉层采用与当前主题匹配的配色，且文本与 CTA 保持可辨识
 
-### Requirement: 主题与粒子协同
+#### Scenario: Reduced-motion preference disables particle movement
 
-粒子颜色 MUST 随当前主题调整，确保两种模式下粒子相对背景均保持可见对比度。
+- **GIVEN** 用户的系统启用了 reduced-motion 偏好
+- **WHEN** Hero Section 渲染
+- **THEN** 粒子视觉层可以保持静态，但不得持续运动
 
-#### Scenario: 暗黑模式粒子配色
-- **WHEN** 当前主题为暗黑
-- **THEN** 粒子 MUST 使用浅色系（不透明度足够与暗色背景区分）
+#### Scenario: Particle rendering is unavailable
 
-#### Scenario: 明亮模式粒子配色
-- **WHEN** 当前主题为明亮
-- **THEN** 粒子 MUST 使用深色或低饱和色系（不与白色背景融合）
-
-#### Scenario: 切换时无视觉错位
-- **WHEN** 主题切换发生
-- **THEN** 粒子配色在下一帧内更新到位（MUST NOT 出现粒子消失或与背景同色超过一帧）
-
-### Requirement: 响应式与首屏性能
-
-Hero MUST 在移动端（视口宽度 < 640px）下保持可用，且 MUST 不引入使首屏加载超过 2 秒的工作。
-
-#### Scenario: 移动端全屏高度
-- **WHEN** 移动端浏览器访问（地址栏弹出/收起会改变视口高度）
-- **THEN** Hero 区域 MUST 始终至少占满当前可见视口高度，不出现下方的空白带或滚动条跳动
-
-#### Scenario: 性能预算
-- **WHEN** 在主流网络（Fast 3G 模拟）与中端设备配置下打开首页
-- **THEN** 首屏可交互时间 MUST < 2 秒
-- **AND** 粒子层 MUST NOT 阻塞首屏文本渲染（粒子降级为可选图层）
-
-#### Scenario: 大屏不被拉空
-- **WHEN** 视口宽度 ≥ 1920px
-- **THEN** 居中内容 MUST 设置最大宽度（不沿用两端对齐），保持视觉重心
-
-### Requirement: HTML 静态 SEO meta 标签（add-seo）
-
-首页的 `index.html` MUST 在 `<head>` 中包含搜索引擎与社交分享爬虫所需的关键 meta 标签，且 MUST 在 React 渲染前已正确（爬虫 / 分享爬虫只看静态 HTML，不等 React mount）。本 Requirement 与 `seo-support` 独立 spec 的"HTML 基础 meta 标签"REQUIREMENT 强关联：后者定义具体 meta 项，本 Requirement 强调其在 Hero 区块语义上的对齐——`<title>` 与 `<meta name="description">` MUST 与 Hero 区块的内容三要素（姓名 / 职业 / 一句话）一致。
-
-#### Scenario: title 与 Hero 姓名 / 职业对齐
-- **WHEN** 维护者更新 `profile.name` 或 `profile.role`
-- **THEN** `index.html` 的 `<title>` MUST 含 `[Your Name]` 与 `[Your Role]` 占位字段（占位字符串由维护者替换为新值；本期不做构建期注入）
-- **AND** `<title>` 渲染 MUST 在爬虫视图（静态 HTML）中与 Hero 区块 `<h1>{profile.name}</h1>` 文案一致
-
-#### Scenario: description 与 Hero 简介对齐
-- **WHEN** 维护者更新 `profile.intro`
-- **THEN** `<meta name="description" content="...">` MUST 含 `profile.intro` 占位字段（占位字符串由维护者替换为新值；本期不做构建期注入）
-- **AND** description 长度 MUST 在 50–160 字符之间
-
-#### Scenario: OG 与 description 同源
-- **WHEN** 维护者更新 `profile.intro`
-- **THEN** `<meta property="og:description">` 与 `<meta name="twitter:description">` MUST 与 description 同源（占位字符串由维护者一并替换）
+- **GIVEN** 浏览器无法使用粒子绘制能力
+- **WHEN** Hero Section 渲染
+- **THEN** 姓名、职业、介绍文案、CTA 和主题切换控件仍保持可用

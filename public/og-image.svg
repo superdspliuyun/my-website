@@ -1,8 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" preserveAspectRatio="xMidYMid slice">
-  <rect width="1200" height="630" fill="var(--color-border, #e2e8f0)" />
-  <text x="600" y="315" text-anchor="middle" dominant-baseline="middle"
-        font-family="system-ui, -apple-system, sans-serif"
-        font-size="56" fill="var(--color-muted, #64748b)">
-    [Your Name] — [Your Role]
-  </text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">小飞侠个人品牌站分享图</title>
+  <desc id="desc">科技感渐变背景上的小飞侠与天马行空文字。</desc>
+  <defs><linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#0f172a"/><stop offset=".55" stop-color="#164e63"/><stop offset="1" stop-color="#0e7490"/></linearGradient></defs>
+  <rect width="1200" height="630" fill="url(#bg)"/><circle cx="960" cy="120" r="220" fill="#22d3ee" opacity=".15"/><circle cx="180" cy="560" r="260" fill="#3b82f6" opacity=".18"/><text x="100" y="280" fill="#a5f3fc" font-family="sans-serif" font-size="42" letter-spacing="12">天马行空</text><text x="100" y="390" fill="#ffffff" font-family="sans-serif" font-size="96" font-weight="700">小飞侠</text><text x="104" y="455" fill="#cbd5e1" font-family="sans-serif" font-size="28">个人品牌站</text></svg>

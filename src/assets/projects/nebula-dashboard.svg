@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">Nebula Dashboard project preview</title>
+  <desc id="desc">A dark dashboard interface with cyan data panels.</desc>
+  <defs><linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#0f172a"/><stop offset="1" stop-color="#164e63"/></linearGradient></defs>
+  <rect width="800" height="500" fill="url(#bg)"/><rect x="48" y="42" width="704" height="48" rx="12" fill="#1e293b"/><circle cx="78" cy="66" r="8" fill="#22d3ee"/><rect x="108" y="60" width="180" height="12" rx="6" fill="#67e8f9" opacity=".8"/><rect x="48" y="118" width="220" height="320" rx="16" fill="#1e293b"/><rect x="292" y="118" width="460" height="150" rx="16" fill="#0e7490" opacity=".7"/><rect x="292" y="288" width="220" height="150" rx="16" fill="#1e293b"/><rect x="532" y="288" width="220" height="150" rx="16" fill="#1e293b"/><path d="M330 230 390 188l64 24 72-68 72 38" fill="none" stroke="#a5f3fc" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>

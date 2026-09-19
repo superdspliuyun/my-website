@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">Signal Lab project preview</title>
+  <desc id="desc">A data visualization workspace with waveform lines.</desc>
+  <rect width="800" height="500" fill="#111827"/><rect x="48" y="44" width="704" height="412" rx="20" fill="#1f2937"/><g stroke="#374151" stroke-width="2"><path d="M84 136h632M84 220h632M84 304h632M84 388h632M180 82v340M300 82v340M420 82v340M540 82v340M660 82v340"/></g><path d="M84 270c30-130 58 120 92-14s62 84 92-48 58 130 92 8 62-92 94 14 56 76 92-44 60 20 116-58" fill="none" stroke="#34d399" stroke-width="8" stroke-linecap="round"/><rect x="84" y="82" width="164" height="24" rx="12" fill="#6ee7b7" opacity=".8"/></svg>

@@ -1,56 +1,43 @@
-/**
- * 项目数据集中点（design D3：与 profile.ts 单文案源模式对齐）。
- * 占位字符串以方括号显式呈现，避免误读为已交付内容；
- * 由维护者替换最终值后即可在 Projects 区块生效，无需改动组件代码。
- *
- * 字段：
- *   - title：项目标题（一级文字）
- *   - description：一句话简介
- *   - tags：标签列表（每条短文字）
- *   - href：外部链接（http(s) 开头）或站内锚点；空字符串降级为不可点击卡片
- *   - screenshot（add-project-section 增补）：项目截图 URL 或站内占位路径；空字符串不渲染 <img>
- *   - githubUrl（add-project-section 增补）：GitHub 仓库 URL；非 http(s) 开头的值会被校验拒绝，等同缺失
- */
-export interface Project {
-  title: string;
-  description: string;
-  tags: readonly string[];
-  href: string;
-  screenshot?: string;
-  githubUrl?: string;
+import nebulaDashboardImage from '../assets/projects/nebula-dashboard.svg'
+import orbitNotesImage from '../assets/projects/orbit-notes.svg'
+import pulseMobileImage from '../assets/projects/pulse-mobile.svg'
+import signalLabImage from '../assets/projects/signal-lab.svg'
+
+export type Project = {
+  name: string
+  description: string
+  image: string
+  imageAlt: string
+  githubUrl: string
 }
 
-export const projects: readonly Project[] = [
+export const projects: Project[] = [
   {
-    title: '[项目 1 标题]',
-    description: '[一句话简介 — 介绍这个项目做了什么、解决了什么问题]',
-    tags: ['[标签]', '[标签]'],
-    href: 'https://example.com/project-1',
-    screenshot: '/projects/placeholder-1.svg',
-    githubUrl: 'https://github.com/[username]/[repo-1]',
+    name: 'Nebula Dashboard',
+    description: '面向创意团队的数据看板示例，聚合实时指标与项目进度。',
+    image: nebulaDashboardImage,
+    imageAlt: 'Nebula Dashboard 数据看板预览',
+    githubUrl: 'https://github.com/example/nebula-dashboard',
   },
   {
-    title: '[项目 2 标题]',
-    description: '[一句话简介]',
-    tags: ['[标签]', '[标签]', '[标签]'],
-    href: 'https://example.com/project-2',
-    screenshot: '/projects/placeholder-2.svg',
-    githubUrl: 'https://github.com/[username]/[repo-2]',
+    name: 'Orbit Notes',
+    description: '用卡片整理灵感与研究资料的轻量笔记空间。',
+    image: orbitNotesImage,
+    imageAlt: 'Orbit Notes 卡片笔记界面预览',
+    githubUrl: 'https://github.com/example/orbit-notes',
   },
   {
-    title: '[项目 3 标题]',
-    description: '[一句话简介]',
-    tags: ['[标签]'],
-    href: 'https://example.com/project-3',
-    screenshot: '/projects/placeholder-3.svg',
-    githubUrl: 'https://github.com/[username]/[repo-3]',
+    name: 'Pulse Mobile',
+    description: '关注日常节奏的移动端健康追踪体验示例。',
+    image: pulseMobileImage,
+    imageAlt: 'Pulse Mobile 移动端健康追踪界面预览',
+    githubUrl: 'https://github.com/example/pulse-mobile',
   },
   {
-    title: '[项目 4 标题]',
-    description: '[一句话简介 — 演示空 href 降级为不可点击卡片]',
-    tags: ['[标签]'],
-    href: '',
-    screenshot: '/projects/placeholder-4.svg',
-    githubUrl: 'https://github.com/[username]/[repo-4]',
+    name: 'Signal Lab',
+    description: '探索声音与数据关系的互动式可视化实验室。',
+    image: signalLabImage,
+    imageAlt: 'Signal Lab 数据可视化工作区预览',
+    githubUrl: 'https://github.com/example/signal-lab',
   },
-];
+]

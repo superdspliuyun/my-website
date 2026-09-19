@@ -1,64 +1,37 @@
-import { profile } from '../data/profile';
+const navigationItems = [
+  { label: '首页', href: '#hero' },
+  { label: '项目', href: '#projects' },
+  { label: '联系我', href: '#contact' },
+]
 
-/** 字段值非空（含非纯空白）时返回 true。 */
-function hasContent(s: string): boolean {
-  return s.trim().length > 0;
-}
-
-/**
- * 顶部固定导航栏（spec「navigation-section」）。
- *
- * 关键点（design D1-D4 + spec 全部 Requirements）：
- *   - 定位：fixed top-0 z-40，始终贴顶（design D1）。
- *   - 背景：bg-background/70 + backdrop-blur，supports-[backdrop-filter] 渐进增强（design D2）。
- *   - 品牌名：左侧，profile.name 缺失时退化为 [品牌名] 占位；品牌名整体作为锚点链接至 #hero。
- *   - 链接：右侧 3 个固定顺序锚点 #hero / #projects / #contact（spec「三个链接固定存在」）。
- *   - 主题：全部 token 类名（text-foreground / hover:text-accent / focus-visible:ring-accent），零硬编码颜色。
- *   - 响应式：内层 max-w-5xl mx-auto flex h-14，移动端单行不折叠、桌面端居中（spec「响应式布局」）。
- *   - 打印：print:hidden，避免占用首行版面（spec「打印态隐藏」）。
- *   - 可访问性：<nav aria-label="主导航">，Tab 顺序 = 品牌名 → 首页 → 项目 → 联系我（spec「可访问性」）。
- */
 function Navigation() {
-  const hasName = hasContent(profile.name);
-  const brandLabel = hasName ? profile.name : '[品牌名]';
-  const { home, projects, contact } = profile.navLabels;
-
-  // 链接通用类名（focus-visible 焦点环遵循全站约定：accent + ring-offset-background）。
-  const linkClass =
-    'rounded-md px-3 py-2 text-sm font-medium text-foreground transition-colors ' +
-    'hover:bg-background/80 hover:text-accent ' +
-    'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ' +
-    'focus-visible:ring-offset-2 focus-visible:ring-offset-background';
-
   return (
-    <nav
-      aria-label="主导航"
-      className="fixed inset-x-0 top-0 z-40 border-b border-border bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/60 print:hidden"
-    >
-      <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
-        {/* 左侧：品牌名（同时作为"首页"链接，spec「品牌名显示与跳转」） */}
+    <header className="fixed inset-x-0 top-0 z-20 border-b border-slate-200/70 bg-slate-50/90 text-slate-900 backdrop-blur-md dark:border-slate-800/70 dark:bg-slate-950/90 dark:text-white">
+      <nav
+        aria-label="主导航"
+        className="mx-auto flex min-h-16 max-w-6xl items-center justify-between gap-4 px-6 sm:px-10"
+      >
         <a
           href="#hero"
-          className="text-sm font-semibold tracking-tight text-foreground transition-colors hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:text-base"
+          className="shrink-0 rounded-md text-base font-bold tracking-wide focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-500"
         >
-          {brandLabel}
+          小飞侠
         </a>
-
-        {/* 右侧：3 个固定顺序锚点链接（spec「三个链接固定存在」） */}
-        <div className="flex items-center gap-1 sm:gap-2">
-          <a href="#hero" className={linkClass}>
-            {home}
-          </a>
-          <a href="#projects" className={linkClass}>
-            {projects}
-          </a>
-          <a href="#contact" className={linkClass}>
-            {contact}
-          </a>
-        </div>
-      </div>
-    </nav>
-  );
+        <ul className="flex items-center gap-3 text-sm font-medium sm:gap-6">
+          {navigationItems.map((item) => (
+            <li key={item.href}>
+              <a
+                href={item.href}
+                className="rounded-md px-2 py-2 text-slate-600 transition-colors hover:text-cyan-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-500 dark:text-slate-300 dark:hover:text-cyan-300"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </header>
+  )
 }
 
-export default Navigation;
+export default Navigation
